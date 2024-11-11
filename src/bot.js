@@ -1,20 +1,19 @@
 import { TwitterApi } from 'twitter-api-v2';
-import dotenv from 'dotenv';
+import { config } from './config.js';
 import { processCommand } from './commands.js';
 
-dotenv.config();
-
-const client = new TwitterApi({
-  appKey: process.env.TWITTER_API_KEY,
-  appSecret: process.env.TWITTER_API_SECRET,
-  accessToken: process.env.TWITTER_ACCESS_TOKEN,
-  accessSecret: process.env.TWITTER_ACCESS_SECRET,
-});
-
 const BOT_USERNAME = 'Tirage';
+let client = null;
 
-async function startBot() {
+export async function startBot(accessToken) {
   try {
+    // Initialize Twitter client with OAuth2 access token
+    client = new TwitterApi(accessToken);
+
+    // Verify credentials
+    const currentUser = await client.v2.me();
+    console.log(`Bot authenticated as: ${currentUser.data.username}`);
+
     const rules = await client.v2.streamRules();
     if (rules.data?.length) {
       await client.v2.updateStreamRules({
@@ -47,10 +46,11 @@ async function startBot() {
 
     stream.on('error', error => {
       console.error('Stream error:', error);
+      // Attempt to reconnect after a delay
+      setTimeout(() => startBot(accessToken), 5000);
     });
   } catch (error) {
     console.error('Bot error:', error);
+    throw error;
   }
 }
-
-startBot();
