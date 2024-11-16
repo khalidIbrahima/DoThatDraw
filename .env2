@@ -1,0 +1,7 @@
+TWITTER_CLIENT_ID=your_twitter_client_id
+TWITTER_CLIENT_SECRET=your_twitter_client_secret
+TWITTER_BEARER_TOKEN=your_twitter_bearer_token
+TWITTER_ACCESS_TOKEN=your_twitter_access_token
+TWITTER_ACCESS_SECRET=your_twitter_access_secret
+CALLBACK_URL=http://localhost:3000/auth/twitter/callback
+SESSION_SECRET=your_session_secret
