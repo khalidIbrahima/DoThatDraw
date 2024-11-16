@@ -2,7 +2,7 @@ import { TwitterApi } from 'twitter-api-v2';
 import { config } from './config.js';
 import { processCommand } from './commands.js';
 
-const BOT_USERNAME = 'Tirage';
+const BOT_USERNAME = 'DoThatDraw';
 let client = null;
 
 export async function startBot(accessToken) {
